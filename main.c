@@ -22,7 +22,7 @@
 void GetFileName(char*);
 void ReadFileArray(char*, char[][MAX_CHARS], char* newArray);
 void ResizeArray(char[][MAX_CHARS], char*);
-void PrintArray(char[][MAX_CHARS]);
+void PrintArray(char[][MAX_CHARS]); //Test Function Did Not Use
 int CountAlph(int, char*);
 int CountDigit(int, char*);
 int CountPunc(int, char*);
@@ -32,7 +32,7 @@ int main(void) {
 
   char *fileName; 
   char fileText[MAX_LINES][MAX_CHARS];
-  char * newArray;
+  char *newArray;
   int alpha, digit, punct;
   int i, j;
 
@@ -40,20 +40,18 @@ int main(void) {
   ReadFileArray(fileName, fileText, newArray);
   ResizeArray(fileText, newArray);
 
-  //PrintArray(fileText); //Test Function to measure dynamic array allocation
-
   alpha = CountAlph(alpha, newArray);
-  digit = CountDigit(digit, newArray);
-  punct = CountPunc(punct, newArray);
+  //digit = CountDigit(digit, newArray);
+  //punct = CountPunc(punct, newArray);
 
-  ReportTotals(alpha, digit, punct);
+  //ReportTotals(alpha, digit, punct);
 
   return 0;
 }//End main
 
 void GetFileName(char* fileName){
 
- /*
+  /*
   * Function Name: GetFileName()
   *
   * Input Parameters: Takes a char pointer named fileName
@@ -187,21 +185,18 @@ int CountAlph(int alpha, char* newArray){
   *
   * Input Parameters: Takes a the alpha integer and the fileText array
   *
-  * Description: This function counts the number of alphabetic characters in the array.
+  * Description: This function counts the number of alphabetic characters in the array. This and my other count functions produces a segmentation fault. I ran out of time before I could identify and remedy the error.
   *
   * Return Value: Returns value of alpha.
   */
 
-  int i, j;
+  int i;
 
-  for (i = 0; i < strlen(newArray); i++){
+  for (i = 0; i < *newArray; i++){
 
-        if (isalpha(newArray[i]) == '\0'){
-          continue;
-        }     
-        else if(isalpha(newArray[i]) == 0){
-          alpha++;
-          }
+    if(isalpha(newArray[i]) == 0){
+      alpha++;
+    }
     
   }
 
@@ -224,9 +219,9 @@ int CountDigit(int digit, char* newArray){
 
   for (i = 0; i < strlen(newArray); i++){
 
-        if (isdigit(newArray[i]) == 0){
-          digit++;
-        }
+    if (isdigit(newArray[i]) == 0){
+      digit++;
+    }
 
   }
 
@@ -249,9 +244,9 @@ int CountPunc(int punct, char* newArray){
 
   for (i = 0; i < strlen(newArray); i++){
 
-        if (ispunct(newArray[i]) == 0){
-          punct++;
-        }
+    if (ispunct(newArray[i]) == 0){
+      punct++;
+    }
   
   }
   
