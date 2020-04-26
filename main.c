@@ -5,7 +5,7 @@
 * program that will read a paragraph from a file and report statics on the 
 * various elements within the file.
 *
-* Author: John Adam Whited N1456488
+* Author: John Adam Whited N01456488
 *
 * Date: 4/25/2020
 */ 
@@ -36,15 +36,21 @@ int main(void) {
   int alpha, digit, punct;
   int i, j;
 
+  //Function block to open and scan the desired file into an array.
+  
   GetFileName(fileName);
   ReadFileArray(fileName, fileText, newArray);
   ResizeArray(fileText, newArray);
 
-  alpha = CountAlph(alpha, newArray);
-  //digit = CountDigit(digit, newArray);
-  //punct = CountPunc(punct, newArray);
+  //Counting functions that will scan the array.
 
-  //ReportTotals(alpha, digit, punct);
+  alpha = CountAlph(alpha, newArray); // Identified Segmentation Error begins here. Could not fix the Error before running out of time to submit application.
+  digit = CountDigit(digit, newArray);
+  punct = CountPunc(punct, newArray);
+
+  //Function that will report totals gathered by counting functions.
+  
+  ReportTotals(alpha, digit, punct); //Tested with hardcoded values. Works if segmentation errors are fixed.
 
   return 0;
 }//End main
@@ -191,6 +197,7 @@ int CountAlph(int alpha, char* newArray){
   */
 
   int i;
+
 
   for (i = 0; i < *newArray; i++){
 
