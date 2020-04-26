@@ -19,7 +19,7 @@
 #define MAX_CHARS 80
 
 void GetFileName(char*);
-void ReadFileArray(char*, char[][MAX_CHARS]);
+void ReadFileArray(char*, char[][MAX_CHARS], char* newArray);
 void ResizeArray(char[][MAX_CHARS]);
 void PrintArray(char[][MAX_CHARS]);
 int CountAlph(int, char[][MAX_CHARS]);
@@ -31,14 +31,15 @@ int main(void) {
 
   char *fileName; 
   char fileText[MAX_LINES][MAX_CHARS];
+  char * newArray;
   int alpha, digit, punct;
   int i, j;
 
   GetFileName(fileName);
-  ReadFileArray(fileName, fileText);
+  ReadFileArray(fileName, fileText, newArray);
   ResizeArray(fileText);
 
-  PrintArray(fileText); //Test Function to measure dynamic array allocation
+  // PrintArray(fileText); //Test Function to measure dynamic array allocation
 
   alpha = CountAlph(alpha, fileText);
   digit = CountDigit(digit, fileText);
@@ -71,12 +72,21 @@ void GetFileName(char* fileName){
   return;
 }//End Function
 
-void ReadFileArray(char* fileName, char fileText[][MAX_CHARS]){
+void ReadFileArray(char* fileName, char fileText[][MAX_CHARS], char* newArray){
 
+  /*
+  * Function Name: ReadFileArray()
+  *
+  * Input Parameters: char* fileName, char fileText[][MAX_CHARS]
+  *
+  * Description: This function takes the fileName given by user and opens the file. It then loads the array of fileText.
+  *
+  * Return Value: Return value is set to void, but it returns the fileText Array.
+  */
+  
   FILE *fp;
   int i, j;
   char* newLen = NULL;
-  char* newArray[10][10];
 
   fp = fopen(fileName, "r");
 
@@ -98,7 +108,7 @@ void ReadFileArray(char* fileName, char fileText[][MAX_CHARS]){
         newArray[i][j] = newLen;
       }*/
       else {
-        fscanf(fp, "%c", &fileText[i][j]);
+        fscanf(fp, "%s", &fileText[i][j]);
       }
     
     }
@@ -113,8 +123,9 @@ void ResizeArray(char fileText[][MAX_CHARS]){
 
   int i, j;
   int newLen = 0;
-
+  char *newArry;
   
+
 
   for (i = 0; i < MAX_LINES; i++){
     for (j = 0; j < MAX_CHARS; j++){
@@ -137,15 +148,25 @@ void ResizeArray(char fileText[][MAX_CHARS]){
 
 void PrintArray(char fileText[][MAX_CHARS]){
 
+/*
+  * Function Name: PrintArray()
+  *
+  * Input Parameters: fileText[][MAX_CHARS] array
+  *
+  * Description: This function prints the array for testing proper array scanning.
+  *
+  * Return Value: Returns void. This function is a test function.
+  */
+
   int i, j;
 
-  for (i = 0; i < MAX_LINES; i++){
-    for (j = 0; j < MAX_CHARS; j++){
+  //for (i = 0; i < MAX_LINES; i++){
+    //for (j = 0; j < MAX_CHARS; j++){
 
-        printf("%c", fileText[i][j]);
+        printf("%s", &fileText[i][j]);
     
-    }
-  }
+    //}
+  //}
   
   printf("\n");
 
@@ -153,6 +174,16 @@ void PrintArray(char fileText[][MAX_CHARS]){
 }//End Function
 
 int CountAlph(int alpha, char fileText[][MAX_CHARS]){
+
+  /*
+  * Function Name: CountAlpha()
+  *
+  * Input Parameters: Takes a the alpha integer and the fileText array
+  *
+  * Description: This function counts the number of alphabetic characters in the array.
+  *
+  * Return Value: Returns value of alpha.
+  */
 
   int i, j;
 
@@ -171,6 +202,16 @@ int CountAlph(int alpha, char fileText[][MAX_CHARS]){
 
 int CountDigit(int digit, char fileText[][MAX_CHARS]){
 
+  /*
+  * Function Name: CountDigit()
+  *
+  * Input Parameters: Takes the digit integer and the fileText array
+  *
+  * Description: This function counts the number of numeric characters in the array.
+  *
+  * Return Value: Returns value of digit.
+  */
+  
   int i, j;
 
   for (i = 0; i < MAX_LINES; i++){
@@ -188,6 +229,16 @@ int CountDigit(int digit, char fileText[][MAX_CHARS]){
 
 int CountPunc(int punct, char fileText[][MAX_CHARS]){
 
+  /*
+  * Function Name: CountDigit()
+  *
+  * Input Parameters: Takes in the punct integer and the fileText array
+  *
+  * Description: This function counts the number of punctuation characters in the array.
+  *
+  * Return Value: Returns value of punct.
+  */
+  
   int i, j;
 
   for (i = 0; i < MAX_LINES; i++){
@@ -204,6 +255,16 @@ int CountPunc(int punct, char fileText[][MAX_CHARS]){
 }//End Function
 
 void ReportTotals(int alpha, int digit, int punct){
+
+  /*
+  * Function Name: ReportTotals()
+  *
+  * Input Parameters: Takes in the alpha, digit, and punct integers
+  *
+  * Description: This function prints the totals found for CountAlph, CountDigit and CountPunc
+  *
+  * Return Value: Returns void.
+  */
 
   printf("\nAfter scanning your document, here are the totals on alphabetic, numeric, and puntuation characters.\n\n");
   printf("Alphabetic: %d\n", alpha);
