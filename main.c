@@ -24,8 +24,8 @@ void ReadFileArray(char*, char[][MAX_CHARS], char* newArray);
 void ResizeArray(char[][MAX_CHARS], char*);
 void PrintArray(char[][MAX_CHARS]);
 int CountAlph(int, char*);
-int CountDigit(int, char[][MAX_CHARS]);
-int CountPunc(int, char[][MAX_CHARS]);
+int CountDigit(int, char*);
+int CountPunc(int, char*);
 void ReportTotals(int, int, int);
 
 int main(void) {
@@ -43,8 +43,8 @@ int main(void) {
   //PrintArray(fileText); //Test Function to measure dynamic array allocation
 
   alpha = CountAlph(alpha, newArray);
-  digit = CountDigit(digit, fileText);
-  punct = CountPunc(punct, fileText);
+  digit = CountDigit(digit, newArray);
+  punct = CountPunc(punct, newArray);
 
   ReportTotals(alpha, digit, punct);
 
@@ -132,13 +132,14 @@ void ResizeArray(char fileText[][MAX_CHARS], char* newArray){
 
   int n, i, j;
   int newLen = 0;
-  
+
   printf("\n");
   
   for (i = 0; i < strlen(fileText[i]); i++){
 
+      //int *array = (int *) calloc(size, sizeof(int));
       n = strlen(fileText[i]);      
-      newArray = (char*)calloc(n, sizeof(char)); 
+      newArray = (char*) calloc(n, sizeof(char)); 
       strcpy(newArray, fileText[i]);
       printf("%s", &newArray[i]);
     
@@ -193,20 +194,21 @@ int CountAlph(int alpha, char* newArray){
 
   int i, j;
 
-  for (i = 0; i < MAX_LINES; i++){
-    for (j = 0; j < MAX_CHARS; j++){
+  for (i = 0; i < strlen(newArray); i++){
 
-        if (isalpha(newArray[i]) == 0){
+        if (isalpha(newArray[i]) == '\0'){
+          continue;
+        }     
+        else if(isalpha(newArray[i]) == 0){
           alpha++;
-        }
+          }
     
-    }
   }
 
   return alpha;
 }//End Function
 
-int CountDigit(int digit, char fileText[][MAX_CHARS]){
+int CountDigit(int digit, char* newArray){
 
   /*
   * Function Name: CountDigit()
@@ -220,20 +222,18 @@ int CountDigit(int digit, char fileText[][MAX_CHARS]){
   
   int i, j;
 
-  for (i = 0; i < MAX_LINES; i++){
-    for (j = 0; j < MAX_CHARS; j++){
+  for (i = 0; i < strlen(newArray); i++){
 
-        if (isdigit(fileText[i][j]) == 0){
+        if (isdigit(newArray[i]) == 0){
           digit++;
         }
-    
-    }
+
   }
 
   return digit;
 }//End Function
 
-int CountPunc(int punct, char fileText[][MAX_CHARS]){
+int CountPunc(int punct, char* newArray){
 
   /*
   * Function Name: CountDigit()
@@ -247,14 +247,12 @@ int CountPunc(int punct, char fileText[][MAX_CHARS]){
   
   int i, j;
 
-  for (i = 0; i < MAX_LINES; i++){
-    for (j = 0; j < MAX_CHARS; j++){
+  for (i = 0; i < strlen(newArray); i++){
 
-        if (ispunct(fileText[i][j]) == 0){
+        if (ispunct(newArray[i]) == 0){
           punct++;
         }
-    
-    }
+  
   }
   
   return punct;
