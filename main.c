@@ -17,12 +17,13 @@
 
 #define MAX_LINES 100
 #define MAX_CHARS 80
+#define FLUSH while(getchar() != '\n')
 
 void GetFileName(char*);
 void ReadFileArray(char*, char[][MAX_CHARS], char* newArray);
-void ResizeArray(char[][MAX_CHARS]);
+void ResizeArray(char[][MAX_CHARS], char*);
 void PrintArray(char[][MAX_CHARS]);
-int CountAlph(int, char[][MAX_CHARS]);
+int CountAlph(int, char*);
 int CountDigit(int, char[][MAX_CHARS]);
 int CountPunc(int, char[][MAX_CHARS]);
 void ReportTotals(int, int, int);
@@ -37,11 +38,11 @@ int main(void) {
 
   GetFileName(fileName);
   ReadFileArray(fileName, fileText, newArray);
-  ResizeArray(fileText);
+  ResizeArray(fileText, newArray);
 
-  // PrintArray(fileText); //Test Function to measure dynamic array allocation
+  //PrintArray(fileText); //Test Function to measure dynamic array allocation
 
-  alpha = CountAlph(alpha, fileText);
+  alpha = CountAlph(alpha, newArray);
   digit = CountDigit(digit, fileText);
   punct = CountPunc(punct, fileText);
 
@@ -103,14 +104,12 @@ void ReadFileArray(char* fileName, char fileText[][MAX_CHARS], char* newArray){
       if (EOF == 0){
         break;
       }
-      /*else if (scanf("%c", &fileText[i][j]) != EOF){
-        newLen = (char*)calloc(strlen(newArray), sizeof(char));
-        newArray[i][j] = newLen;
-      }*/
-      else {
-        fscanf(fp, "%s", &fileText[i][j]);
+      else if (fscanf(fp, "%c", &fileText[i][j]) != '\0'){
+        continue;
       }
-    
+      else{
+        fscanf(fp, "%c", &fileText[i][j]);
+      }
     }
   }//End For Loop
 
@@ -119,36 +118,42 @@ void ReadFileArray(char* fileName, char fileText[][MAX_CHARS], char* newArray){
   return;
 }//End Function
 
-void ResizeArray(char fileText[][MAX_CHARS]){
+void ResizeArray(char fileText[][MAX_CHARS], char* newArray){
 
-  int i, j;
+  /*
+  * Function Name: ResizeArray()
+  *
+  * Input Parameters: char fileText[][MAX_CHARS], char* newArray
+  *
+  * Description: This function takes the fileText array and loads the string into a new pointer array.
+  *
+  * Return Value: Return value is set to void, but it returns the newArray point array.
+  */
+
+  int n, i, j;
   int newLen = 0;
-  char *newArry;
   
+  printf("\n");
+  
+  for (i = 0; i < strlen(fileText[i]); i++){
 
-
-  for (i = 0; i < MAX_LINES; i++){
-    for (j = 0; j < MAX_CHARS; j++){
-
-      
-    }
+      n = strlen(fileText[i]);      
+      newArray = (char*)calloc(n, sizeof(char)); 
+      strcpy(newArray, fileText[i]);
+      printf("%s", &newArray[i]);
+    
   }
   
-  /*for (i = 0; i < MAX_LINES; i++){
+  free(newArray);
 
-    if ((isalpha(fileText[i][0]) == 0) || (isdigit(fileText[i][0]) == 0) || (ispunct(fileText[i][0]) == 0)) {
-      newLen++;
-    }
-  }
-
-  printf("\n%d\n", newLen);*/
+  printf("\n");
 
   return;
 }//End Function
 
 void PrintArray(char fileText[][MAX_CHARS]){
 
-/*
+  /*
   * Function Name: PrintArray()
   *
   * Input Parameters: fileText[][MAX_CHARS] array
@@ -160,20 +165,21 @@ void PrintArray(char fileText[][MAX_CHARS]){
 
   int i, j;
 
-  //for (i = 0; i < MAX_LINES; i++){
-    //for (j = 0; j < MAX_CHARS; j++){
+  for (i = 0; i < MAX_LINES; i++){
+    for (j = 0; j < MAX_CHARS; j++){
 
-        printf("%s", &fileText[i][j]);
-    
-    //}
-  //}
+        if(fileText[i][j] != '\0'){
+          printf("%c", fileText[i][j]);
+        }
+    }
+  }
   
   printf("\n");
 
   return;
 }//End Function
 
-int CountAlph(int alpha, char fileText[][MAX_CHARS]){
+int CountAlph(int alpha, char* newArray){
 
   /*
   * Function Name: CountAlpha()
@@ -190,7 +196,7 @@ int CountAlph(int alpha, char fileText[][MAX_CHARS]){
   for (i = 0; i < MAX_LINES; i++){
     for (j = 0; j < MAX_CHARS; j++){
 
-        if (isalpha(fileText[i][j])){
+        if (isalpha(newArray[i]) == 0){
           alpha++;
         }
     
@@ -217,7 +223,7 @@ int CountDigit(int digit, char fileText[][MAX_CHARS]){
   for (i = 0; i < MAX_LINES; i++){
     for (j = 0; j < MAX_CHARS; j++){
 
-        if (isdigit(fileText[i][j])){
+        if (isdigit(fileText[i][j]) == 0){
           digit++;
         }
     
@@ -244,7 +250,7 @@ int CountPunc(int punct, char fileText[][MAX_CHARS]){
   for (i = 0; i < MAX_LINES; i++){
     for (j = 0; j < MAX_CHARS; j++){
 
-        if (ispunct(fileText[i][j])){
+        if (ispunct(fileText[i][j]) == 0){
           punct++;
         }
     
